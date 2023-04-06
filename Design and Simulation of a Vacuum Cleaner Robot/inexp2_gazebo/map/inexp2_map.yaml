@@ -1,0 +1,12 @@
+# /home/samuel/catkin_ws/src/inexp2_gazebo/map/inexp2_map.pgm
+# ../map/inexp2_map.pgm
+image: ../map/inexp2_map.pgm
+# metre per pixel
+resolution: 0.050000
+origin: [-100.000000, -100.000000, 0.000000]
+negate: 0
+# if pixel value larger than this it would be viewed as obstacles
+occupied_thresh: 0.65
+# if pixel value smaller than this it would be viewed as cleared
+free_thresh: 0.196
+

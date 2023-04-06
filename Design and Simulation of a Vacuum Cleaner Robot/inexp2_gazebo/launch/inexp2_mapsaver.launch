@@ -1,0 +1,4 @@
+<launch>
+    <!-- save the map -->
+    <node name="map_saver" pkg="map_server" type="map_saver" args="-f $(find inexp2_gazebo)/map/inexp2_map" />
+</launch>

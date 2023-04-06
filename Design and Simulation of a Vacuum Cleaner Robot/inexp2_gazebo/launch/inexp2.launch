@@ -1,0 +1,64 @@
+<launch>
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find inexp2_gazebo)/worlds/my_studio.world"/>
+    <!-- more default parameters can be changed here -->
+  </include>
+  <!-- Spawn a robot into Gazebo -->
+  <param name="robot_description" textfile="$(find inexp2_description)/urdf/inexp.urdf"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model inexp2 -param robot_description"/>
+  <!-- Spawn the signals into Rviz -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find inexp2_description)/rviz/inexp2.rviz" required="true" />
+  <!--controller stuff-->
+  <rosparam command="load"
+            file="$(find inexp2_description)/config/joints.yaml"
+            ns="r2d2_joint_state_controller" />
+  <rosparam command="load"
+            file="$(find inexp2_description)/config/diffdrive.yaml"
+            ns="r2d2_diff_drive_controller" />
+  <node name="r2d2_controller_spawner" pkg="controller_manager" type="spawner"
+    args="r2d2_joint_state_controller
+          r2d2_diff_drive_controller "/>
+  <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
+    <param name="default_topic" value="/r2d2_diff_drive_controller/cmd_vel"/>
+    </node>
+  <!-- SLAM stuff -->
+  <param name="use_sim_time" value="true"/>
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+      <remap from="scan" to="/scan"/>  <!--/rrbot/laser/scan-->
+      <param name="map_update_interval" value="5.0"/> <!-- the default value is 5.0, slowwwww -->
+      <param name="odom_frame" value="odom"/> <!-- added -->
+  </node>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find inexp2_gazebo)/map/inexp2_map.yaml"/>
+  <!-- amcl stuff -->
+  <!-- diff, omni -->
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+      <param name="odom_model_type" value="diff"/>
+  </node>
+  <!-- move_base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
+      <remap from="cmd_vel" to="/r2d2_diff_drive_controller/cmd_vel"/>
+      <rosparam file="$(find inexp2_description)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find inexp2_description)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find inexp2_description)/config/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find inexp2_description)/config/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find inexp2_description)/config/base_local_planner_params.yaml" command="load" />
+  </node>
+  <!-- facial recognition -->
+  <node name="find_object_2d" pkg="find_object_2d" type="find_object_2d" output="screen">
+      <remap from="image" to="/rrbot/camera1/image_raw"/>
+      <param name="gui" value="true" type="bool"/>
+      <param name="session_path" value="$(find inexp2_gazebo)/objects/inexp2_session.bin" type="str"/>
+  </node>
+  <!-- stop when face detected -->
+  <node pkg="inexp2_description" type="robotstop" name="objects_detected" respawn="true" output="screen">
+  </node>
+  <!-- image saver -->
+  <node pkg="image_view" type="image_saver" name="image_saver" output="screen">
+    <remap from="image" to="/rrbot/camera1/image_raw"/>
+    <param name="save_all_image" value="false"/>
+    <param name="filename_format" value="$(find inexp2_gazebo)/pictures/image_%04d.png" />
+  </node>
+</launch>
