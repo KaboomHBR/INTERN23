@@ -1,0 +1,11 @@
+robot_radius: 0.3
+
+obstacle_range: 3.0 # to activate costmap
+raytrace_range: 3.5 # to clear obstacles
+
+inflation_radius: 0.2
+cost_scaling_factor: 4.0
+
+map_type: costmap
+observation_sources: scan
+scan: {sensor_frame: hokuyo_link, data_type: LaserScan, topic: scan, marking: true, clearing: true}
