@@ -10,3 +10,4 @@ cyoa-step3:   cyoa-step3.cpp cyoa.hpp
 	g++ $(CFLAGS) -o cyoa-step3 cyoa-step3.cpp cyoa.cpp
 cyoa-step4:   cyoa-step4.cpp cyoa.hpp
 	g++ $(CFLAGS) -o cyoa-step4 cyoa-step4.cpp cyoa.cpp
+
