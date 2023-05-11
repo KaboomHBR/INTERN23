@@ -1,0 +1,54 @@
+03/29/2023
+First meeting discussed the project requirement and database structures.
+
+03/30/2023
+Updated the database structures, with four tables whose names are all capitalized.
+notice that for actually capitalize the names need to pass in extra pair of quotation marks.
+
+03/31/2023
+We started the desing of the database manipulation functions.
+and we decide to de-capitalize every of the previous design for simplicity, hate typing those \"
+notice that the project requirement states that there exists a double manipulation for buying and selling orders:
+    for buying: first lower balance in ACCOUNT, then after execution increase amount
+    for selling: first lower amount in ACCOUNT, then after execution increase balance
+    this implies that whlie cancellation the reverse procedure should be done
+also notice that the generation of TransID was through max(serialize_num), might be problematic for multithread?
+
+04/02/2023
+Found an open source library tinyxml2 to parse xml files. Need to learn more about it.
+
+04/03/2023
+Was implementing handle_create and seems ok
+notice that later the response could be wrapped into loggers or maybe dump into some sort of XML and sent back
+
+04/04/2023
+First start testing the database funcs and found that, a foreign key of a database gotta be a primary key of another database
+    so for our table ACCOUNT where we got two attributes (AccountID, SymbolName) together being the primary key,
+    the table in TRANSACTION should have its foreigh key jointly pointing to that of ACCOUNT
+    don't think we need it anyway cuz just forget about that foreigh key relations then not a big deal
+Do we really need the SYMBOL table????
+--leave it there anyways not much time left
+
+04/05/2023
+Done handle-transaction. Defined some classes for <transaction> in order.hpp
+notice that they were all defined as public, might not be that good
+
+04/06/2023
+Just saw in notion that the logic of pricing of the matched orders are the pricelimit of the older order.... 
+That information was not in the pdf so... wow
+notice that while testing we encountered a scenario where two executions might have the same time vairable
+    this might be due to the precision of it but since the definition of such variable is restricted by the
+    task requirement we leave it as it is
+
+04/07/2023
+while testing sometimes encountered "cannot bind socket" error which is not very nice nor robust
+also the value of number of shares upon query or other operations for a selling order is unclear:
+    should the server return the negative value all the time or make it positive?
+    we noticed that in Page 3 of the tasksheet it said "Both of these will contain the same sym, amount,
+    and limit as the requested transaction" so looks like we should preserve the negative sign while returning
+    but for the example given in Page 6 the query result of Order 7, a sell order, is positive.
+    we ended up defining the return as:
+        if received <order> tag, we return the negative value of the amount
+        if received <query> or <cancel>, we return the positive value of the amount
+    the operation of the buying / selling functionality is actually working as expected so far,
+    its just the implementation that is giving a bit of headache
