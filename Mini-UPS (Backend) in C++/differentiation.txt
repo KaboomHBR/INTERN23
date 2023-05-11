@@ -1,0 +1,20 @@
+1. Package Arrival Information
+Our UPS will send a remainder message to Amazon upon package arrival.
+
+2. Send Emails
+Once the package destination has been redirected, we will inform the user by sending an email.
+
+3. Edit Personal Profile
+After longin, users can view and edit their personal profile.
+
+4. Reset the Password
+Users can reset password by clicking "reset password" on the login page, if she forgets her password.
+
+5. Shipment Evaluation
+Users can leave an evaluation once the current order is delivered, which will be stored in our database.
+
+6. Shipment Status Update
+Users can get the current location (package x & package y) of a package.
+
+7.UserID Uniqueness Check
+When registering, username (userID) are checked to ensure that they are unique.

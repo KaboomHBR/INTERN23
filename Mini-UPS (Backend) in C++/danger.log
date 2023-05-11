@@ -1,0 +1,59 @@
+15/04/2023
+First meeting and done the DB design, not sure whether we need to record the location of  trucks in 
+table TRUCK
+
+19/04/2023
+Started to implement database_func and only records truck status in TRUCK, no locations. Add it if we 
+need it later.
+Also remember the update_PKG_dest function would update destnation straight away, handle the truck status 
+check in a higher level func.
+
+20/04/2023
+For the Google Protocol Buffer:
+1. Install bazel: https://bazel.build/install/ubuntu
+2. Install protoc: https://grpc.io/docs/protoc-installation/
+3. Install Protobuf - Unix for C++: https://github.com/protocolbuffers/protobuf/blob/main/src/README.md
+   And just ignore the first line of terminal instruction it does not work.
+4. protoc usage: protoc --cpp_out=. *.proto //for generating .pb.cc and .pb.h files in current directory
+   https://protobuf.dev/getting-started/cpptutorial/
+
+21/04/2023
+Writing of Makefile: `pkg-config --cflags --libs protobuf`, also please use g++ not gcc
+https://www.youtube.com/watch?v=KPoBaBpr2XI
+Details on generated .pb.cc and .pb.h files: https://developers.google.com/protocol-buffers/docs/reference/cpp-generated
+Current Makefile is GIGANTIC -- DEAL WITH IT LATER!!!!
+
+22/04/2023
+Updated try-catch in database_func.cpp
+zx106@vcm-32254:~/trydocker$ git clone https://github.com/yunjingliu96/world_simulator_exec.git
+Docker installation: https://docs.docker.com/engine/install/ubuntu/
+
+23/04/2023
+Add onemore attribute at PKG called userID
+Don't know how to handle threads...
+
+24/04/2023
+Not sure the way of handling unique_ptr in gpb_server.cpp, needs double check.
+
+25/04/2023
+In gpb_server.cpp: we would only send acks at most twice, what if both of them failed??? not robust!
+
+26/04/2023
+Found a bug in gpb_server(): cannot use two if statements to check if there's any incoming message:
+the one listening on amazon socket would block the one for the world socket.
+
+27/04/2023
+Solve the bug yesterday and just remember upsID is not being implemented at this moment.
+upsID can be implemented now
+static global variable cannot work on multithreading
+Also noticed the problem of sending multiple UAcommands even if being acked, the problem does not exist 
+   when dealing with the world... since the design is highly symmetrical there might be some typo within
+Also notice that the other amazons and the server would send previous commands/responses all stack up together
+even if they are being acked, not a correctness problem but is disturbing.
+
+28/04/2023
+There's indeed a typo, solved.
+Solve the multiple stack up commands yesterday, turns out we need to .Clear() the bloody class as it is a 
+   container that would not be overwritten by the protobuf template recv/sendMsg files.
+
+

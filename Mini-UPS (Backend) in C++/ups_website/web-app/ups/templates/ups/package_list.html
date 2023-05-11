@@ -1,0 +1,110 @@
+{% extends 'ups/base.html' %}
+{% block content %}
+
+<br>
+<p>
+    Here is a list of all your packages.
+</p>
+<br>
+
+<p>
+    1 - Click the "Change" button to redirect the package destination.
+</p>
+<br>
+
+<p>
+    2 - Click the "Evaluate" button to evaluate the shipment.
+</p>
+<br>
+
+
+<table border="1">
+    <!-- tr表示每一行， td表示每一个元素 -->
+    <thead>
+        <tr>
+            <!-- tr表示table row， 指一行 -->
+            <!-- th相当于是列表的头，告知这一列是什么元素 -->
+            <th> Package Id </th>
+            <th> Destination X </th>
+            <th> Destination Y </th>
+            <th> Item </th>
+            <th> Package Status </th>
+            <th> Package X </th>
+            <th> Package Y </th>
+            <th> Change Destination </th>
+            <th> Evaluation </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for pkg in object_list %}
+        <tr>
+            <!-- td表示每一行里面的元素 -->
+            <td>{{ pkg.pkgid }}</td>
+            <td>{{ pkg.destx }}</td>
+            <td>{{ pkg.desty }}</td>
+            <td>{{ pkg.item }}</td>
+            <td>
+                {% if pkg.truckid == -1 %}
+                {{ 'created' }}
+                {% elif pkg.truckid == -2 %}
+                {{ 'delivered' }}
+                {% else %}
+                {% for truck in trucks %}
+                {% if pkg.truckid == truck.truckid %}
+                {% if truck.status == 0 %}
+                {{ 'idle' }}
+                {% elif truck.status == 1 %}
+                {{ 'truck en route to warehouse' }}
+                {% elif truck.status == 2 %}
+                {{ 'truck waiting for package' }}
+                {% elif truck.status == 3 %}
+                {{ 'out for delivery' }}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </td>
+            <td>
+                {% for truck in trucks %}
+                {% if pkg.truckid == truck.truckid %}
+                {{ truck.truckx}}
+                {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for truck in trucks %}
+                {% if pkg.truckid == truck.truckid %}
+                {{ truck.trucky}}
+                {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% if pkg.truckid == -2 %}
+                Cannot Change now!
+                {% else %}
+                {% with pkg.truck as truck %}
+                {% if truck.status == 'out for delivery' %}
+                Cannot Change now!
+                {% else %}
+                <button onclick="window.location.href='{% url 'package-update' pkg.pkgid %}'">Change</button>
+                {% endif %}
+                {% endwith %}
+                {% endif %}
+            </td>
+
+            {% if pkg.truckid != -2 %}
+            <td>Cannot Evaluate now!</td>
+            {% else %}
+            {% if not pkg.evaluation %}
+            <td><button onclick="window.location.href='{% url 'package-evaupdate' pkg.pkgid %}'">Evaluate</button></td>
+            {% else %}
+            <td>{{ pkg.evaluation }}</td>
+            {% endif %}
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}
