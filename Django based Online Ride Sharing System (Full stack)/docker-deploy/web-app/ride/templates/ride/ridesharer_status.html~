@@ -1,0 +1,65 @@
+{% load mathfilters %}
+{% block content %}
+
+<p>
+  Here are all your joined share-rides.
+</p>
+<p>
+  You can cancel your share-rides by clicking "cancel" anytime before a driver comfirms your ride.
+</p>
+<p>
+  If you would like to edit, please cancel first and start a new searching.
+</p>
+<br>
+
+<table border="1">
+  <!-- tr表示每一行， td表示每一个元素 -->
+  <thead>
+    <tr>
+      <!-- tr表示table row， 指一行 -->
+      <!-- th相当于是列表的头，告知这一列是什么元素 -->
+      <th>Status</th>
+      <th>Cancel</th>
+      <th>Owner</th>
+      <th>Destination</th>
+      <th>Arrival Time</th>
+      <th>Total Passenger Number</th>
+      <th>Owner's Passenger Number</th>
+      <th>Share Or Not</th>
+      <th>Type Requirement</th>
+      <th>Special Requirement</th>
+      <th>Sharer</th>
+      <th>Driver</th>
+      <th>Driver's vehicle</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for ride in object_list %}
+    <tr>
+      <!-- td表示每一行里面的元素 -->
+      <td>{{ ride.status }}</td>
+      {% if ride.status == 'open'%}
+      <td><a href="{% url 'ridesharer-cancel' ride.id %}">Cancel</a></td>
+      {% else %}
+      <td>Cannot Cancel Now</td>
+      {% endif %}
+      <td>{{ ride.owner.username }}</td>
+      <td>{{ ride.destination }}</td>
+      <td>{{ ride.arrival_time|date:"m/d/Y P" }}</td>
+      <td>{{ ride.num_passengers }}</td>
+      <td>{{ ride.num_passengers }}</td>
+      <td>{{ ride.sharing }}</td>
+      <td>{{ ride.vehicle_type }}</td>
+      <td>{{ ride.special_requests }}</td>
+      <td>{{ ride.sharer }}</td>
+      <td>{{ ride.driver_name }}</td>
+      <td>{{ ride.license_plate }}</td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+
+{% endblock content %}

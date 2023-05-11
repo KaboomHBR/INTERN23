@@ -1,0 +1,40 @@
+{% extends 'ride/base.html' %}
+{% block content %}
+<h1>Welcome Back to Uper</h1>
+<h2>Explore Somewhere New Today!</h2>
+<h2>CP & ZX Got Your Back!</h2>
+
+{% if user.is_authenticated %}
+
+<br>
+<p class = "main">
+  Owner's Home: Start your journey or view your orders as an owner.
+</p>
+
+<br>
+
+<p class = "main">
+  Sharer's Home: Join in open ride or view your orders as a sharer.
+</p>
+
+<br>
+
+<p class = "main">
+  Driver's Home: Find open order to make some money! Need to register as a driver first!
+</p>
+
+<br>
+
+<p class = "main">
+  Hope you have a good experience with us CP & ZX!
+</p>
+
+{% else %}
+<br>
+<p class = "main">
+  Please log in first to begin your journey!.
+  </p>
+
+{% endif %}
+
+{% endblock content %}

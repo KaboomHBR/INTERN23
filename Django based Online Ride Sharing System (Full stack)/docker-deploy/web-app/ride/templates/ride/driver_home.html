@@ -1,0 +1,28 @@
+{% extends 'ride/base.html' %}
+{% block content %}
+<div>
+  <h2>
+    Welcome back dear driver!</h2>
+  <h2>Thanks for you service!
+  </h2>
+
+  
+  <p class=main>
+    Click "Find a Ride" to choose a suitable order and begin working.
+  </p>
+  <button onclick="window.location.href='{% url 'ridedriver-search' %}'">Find a Ride</button><br><br>
+  <p class =main>
+    Click "All Orders" to see the order you have picked and are now working on.
+  </p>
+  <button onclick="window.location.href='{% url 'ridedriver-status' %}'">All Orders</button> <br><br>
+  <p class = main>
+    Remember to click "Confirm" when you finish the order!
+  </p>
+  <br>
+  
+   <h6>**********ATENTION***********</h6>
+  <h6>If you do not want to be a driver anymore, please delete your vehicle's license plate number. Then we will delete your information from our driver database.</h6>
+
+  
+</div>
+{% endblock content %}

@@ -1,0 +1,8 @@
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    path('register/', views.index_register, name='index_register'),
+    path('driver_info/', views.index_driver_info, name='index_driver_info'),
+]

@@ -1,0 +1,44 @@
+from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
+from django.urls import reverse
+# Create your models here.
+
+VEHICLE_TYPE = (
+    ("SEDAN", "SEDAN"),
+    ("SUV", "SUV"),
+    ("VAN", "VAN"),
+    ("--", "--"),
+    )
+
+STATUS_TYPE = (
+    ("open", "open"),
+    ("confirmed", "confirmed"),
+    ("completed", "completed"),
+)
+
+class Ride_owner(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    destination = models.CharField(max_length = 100)
+    arrival_time = models.DateTimeField()
+    num_passengers = models.PositiveIntegerField(default=4)
+    vechicle_type = models.CharField(max_length = 20, choices = VEHICLE_TYPE, default = "--")
+    sharing = models.BooleanField()
+    sharer = models.ManyToManyField(User, blank=True, related_name='sharer')
+    special_requests = models.CharField(max_length = 200, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_TYPE, default="open")
+    def __str__(self):
+        return self.addr
+
+class Ride_sharer(models.Model):
+    sharer = model.ForeignKey(User, on_delete=models.CASCADE)
+    destination = models.CharField(max_length = 100)
+    earliest_arrival_time = models.DateTimeField()
+    latest_arrival_time = models.DateTimeField()
+    num_passengers = models.PositiveIntegerField(default=1)
+    def __str__(self):
+        return self.addr
+    
+    
+    
+

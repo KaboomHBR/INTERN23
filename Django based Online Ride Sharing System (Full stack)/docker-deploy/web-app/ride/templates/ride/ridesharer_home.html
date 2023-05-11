@@ -1,0 +1,23 @@
+{% extends 'ride/base.html' %}
+{% block content %}
+<div>
+  <h2>
+    Welcome back dear ride sharer
+  </h2>
+
+  <h2>
+    Start your wonderful journey here!
+  </h2>
+
+  <p class = "main">
+    Click "Share a Journey" to find a suitable ride with same destination as yours.
+  </p>
+  <button onclick="window.location.href='{% url 'ridesharer-search' %}'">Share a Journey</button> <br><br>
+
+  <p class = "main">
+    Click "My Share Rides" to see all your share-rides.
+  </p>
+  <button onclick="window.location.href='{% url 'ridesharer-status' %}'">My Share Rides</button> <br><br>
+
+</div>
+{% endblock content %}

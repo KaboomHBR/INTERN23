@@ -1,0 +1,50 @@
+{% extends 'ride/base.html' %}
+{% block content %}
+
+<p>
+    Here is all the possible orders you can pick now!
+</p>
+<br>
+
+<p>
+    If you want to choose one, click the confirm button!
+</p>
+<br><br>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Confirm</th>
+            <th>Owner</th>
+            <th>Destination</th>
+            <th>Arrival Time</th>
+            <th>Total Passenger Number</th>
+            <th>Share</th>
+            <th>Type Requirement</th>
+            <th>Special Requirement</th>
+            <th>Sharer</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for ride in object_list %}
+        <tr>
+            <td>{{ ride.status }}</td>
+            <td><button onclick="window.location.href='{% url 'ridedriver-confirm' ride.id %}'">Confirm</button></td>
+            <td>{{ ride.owner.username }}</td>
+            <td>{{ ride.destination }}</td>
+            <td>{{ ride.arrival_time|date:"m/d/Y P" }}</td>
+            <td>{{ ride.num_passengers }}</td>
+            <td>{{ ride.sharing }}</td>
+            <td>{{ ride.vechcle_type }}</td>
+            <td>{{ ride.special_requests }}</td>
+            <td>{{ ride.sharer }}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock content %}

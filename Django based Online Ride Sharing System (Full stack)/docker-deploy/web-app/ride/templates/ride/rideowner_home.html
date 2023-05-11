@@ -1,0 +1,23 @@
+{% extends 'ride/base.html' %}
+
+{% block content %}
+<div>
+  <h2>
+    Welcome back dear ride owner
+  </h2>
+  <h2>  Start your wonderful journey here!
+  </h2>
+  <p class = "main">
+    Click "Request A Ride" to request a new ride as ride owner.
+  </p>
+  
+  <button onclick="window.location.href='{% url 'rideowner-request' %}'">Request A Ride</button><br><br>
+  <p class = "main">
+    Click "My Rides" to see all your requested orders.
+  </p>
+ 
+
+  <button onclick="window.location.href='{% url 'rideowner-status' %}'">My Rides</button> <br><br>
+  <br>
+</div>
+{% endblock content %}

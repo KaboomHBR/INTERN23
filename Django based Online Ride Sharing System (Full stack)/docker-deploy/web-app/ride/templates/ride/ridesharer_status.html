@@ -1,0 +1,59 @@
+{% extends 'ride/base.html' %}
+{% block content %}
+
+<p>
+  Here are all your joined share rides.
+</p>
+<p>
+  You can cancel your share rides by clicking "Cancel" button anytime before a driver comfirms your ride.
+</p>
+<p>
+  If you would like to edit, please cancel first and start a new searching.
+</p>
+<br>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Cancel</th>
+      <th>Owner</th>
+      <th>Destination</th>
+      <th>Arrival Time</th>
+      <th>Total Passenger Number</th>
+      <th>Type Requirement</th>
+      <th>Special Requirement</th>
+      <th>Sharer</th>
+      <th>Driver</th>
+      <th>Driver's vehicle</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for ride in object_list %}
+    <tr>
+      <td>{{ ride.status }}</td>
+      {% if ride.status == 'open'%}
+      <td><button onclick="window.location.href='{% url 'ridesharer-cancel' ride.id %}'">Cancel</button></td>
+      {% else %}
+      <td>Cannot Cancel Now</td>
+      {% endif %}
+      <td>{{ ride.owner.username }}</td>
+      <td>{{ ride.destination }}</td>
+      <td>{{ ride.arrival_time|date:"m/d/Y P" }}</td>
+      <td>{{ ride.num_passengers }}</td>
+      <td>{{ ride.vehicle_type }}</td>
+      <td>{{ ride.special_requests }}</td>
+      <td>{{ ride.sharer }}</td>
+      <td>{{ ride.driver_name }}</td>
+      <td>{{ ride.license_plate }}</td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+
+
+
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% extends 'ride/base.html' %}
+{% block content %}
+
+<br>
+<p>
+  Here are all the possible rides you can share with now.
+</p>
+<p>
+  You can choose one and click "join" button.
+</p>
+<br>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Join</th>
+      <th>Owner</th>
+      <th>Destination</th>
+      <th>Arrival Time</th>
+      <th>Owner's passenger Number</th>
+      <th>Type Requirement</th>
+      <th>Special Requirement</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for ride in object_list %}
+    <tr>
+      <td>{{ ride.status }}</td>
+      <td><button onclick="window.location.href='{% url 'ridesharer-join' ride.id %}'">Join</button></td>
+      <td>{{ ride.owner.username }}</td>
+      <td>{{ ride.destination }}</td>
+      <td>{{ ride.arrival_time|date:"m/d/Y P" }}</td>
+      <td>{{ ride.num_passengers }}</td>
+      <td>{{ ride.vehicle_type }}</td>
+      <td>{{ ride.special_requests }}</td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+
+{% endblock content %}
