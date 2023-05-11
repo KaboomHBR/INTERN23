@@ -1,0 +1,19 @@
+ECE568 hw1 ride_share
+
+Can Pei & Ziye Xie
+
+Danger log
+
+1/29 
+Begin the project, decide to use "ride" as the single App and put 3 models: Ride_owner, Ride_driver and Ride_sharer with all of the fields required in the task sheet within the App's model.py file. Later implementation should figure out how to apply these fields and their interaction with views.py.
+
+1/31
+When user has logged off he/she could still access the profile page.
+When driver has cleared its license_plate field he could still search for a ride.
+@login_required is needed in all functions and we should use LoginRequiredMixin.
+
+2/1
+While clicking "become a driver" or "driver's home" encounter an error -- "user has no object Ride_driver", and while examing in its fields looks like whatever the value user was assigned to/before would be "None". Still needs to debug.
+
+2/2
+Bug fixed. In one field of signal.py we should use Ride_driver as its field rather than "user" (the default user).
